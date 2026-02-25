@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partie 2 — Suite Technique | Le Martin x VisionIA</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        martin: { 50:'#fdf8f6',100:'#f2e8e5',200:'#eaddd7',300:'#e0cec7',400:'#d2bab0',500:'#bfa094',600:'#a18072',700:'#977669',800:'#846358',900:'#6f4f41',950:'#3d2c23' },
+        neo: { yellow:'#FFE156',pink:'#FF6B9D',blue:'#4ECDC4',purple:'#A855F7',green:'#22C55E',orange:'#F97316',red:'#EF4444' },
+        dark: '#1a1a2e',
+      },
+      fontFamily: { grotesk:['Space Grotesk','sans-serif'], inter:['Inter','sans-serif'] },
+      boxShadow: { neo:'5px 5px 0px #1a1a2e', 'neo-lg':'8px 8px 0px #1a1a2e', 'neo-xl':'12px 12px 0px #1a1a2e' },
+    }
+  }
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#fdf8f6;overflow-x:hidden}
+.font-grotesk{font-family:'Space Grotesk',sans-serif}
+.neo-border{border:3px solid #1a1a2e}
+.neo-border-2{border:2px solid #1a1a2e}
+.neo-card{border:3px solid #1a1a2e;box-shadow:5px 5px 0px #1a1a2e;transition:all .2s}
+.neo-card:hover{box-shadow:8px 8px 0px #1a1a2e;transform:translate(-2px,-2px)}
+.neo-btn{border:3px solid #1a1a2e;box-shadow:4px 4px 0px #1a1a2e;transition:all .15s;font-weight:700;text-decoration:none;display:inline-block}
+.neo-btn:hover{box-shadow:1px 1px 0px #1a1a2e;transform:translate(3px,3px)}
+.marquee{animation:marquee 30s linear infinite}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.float{animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.pulse-glow{animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:5px 5px 0px #1a1a2e}50%{box-shadow:5px 5px 20px rgba(78,205,196,.5)}}
+.slide-in{opacity:0;transform:translateY(40px);transition:all .6s ease-out}
+.slide-in.visible{opacity:1;transform:translateY(0)}
+.gradient-text{background:linear-gradient(135deg,#4ECDC4,#A855F7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sticker{position:absolute;border:2px solid #1a1a2e;border-radius:50%;padding:8px 14px;font-weight:800;font-size:0.75rem;transform:rotate(-12deg);box-shadow:3px 3px 0 #1a1a2e}
+.img-neo{border:3px solid #1a1a2e;box-shadow:6px 6px 0px #1a1a2e}
+.email-bubble{border:2px solid #1a1a2e;border-radius:0 18px 18px 18px;box-shadow:4px 4px 0 #1a1a2e}
+.email-bubble-ai{border:2px solid #1a1a2e;border-radius:18px 0 18px 18px;box-shadow:4px 4px 0 #1a1a2e}
+.ribbon{position:absolute;top:20px;right:-10px;background:#EF4444;color:white;padding:4px 20px;font-weight:700;font-size:.75rem;border:2px solid #1a1a2e;box-shadow:3px 3px 0 #1a1a2e}
+.cta-float{position:fixed;bottom:24px;right:24px;z-index:999}
+nav a{position:relative}
+nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:3px;background:#4ECDC4;transition:width .3s}
+nav a:hover::after{width:100%}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#fdf8f6}
+::-webkit-scrollbar-thumb{background:#1a1a2e;border:2px solid #fdf8f6;border-radius:0}
+.badge-suite{background:linear-gradient(135deg,#A855F7,#4ECDC4);color:white;padding:2px 12px;font-size:.7rem;font-weight:800;letter-spacing:1px;border-radius:20px}
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- NAVIGATION -->
+<!-- ============================================ -->
+<nav id="navbar" class="fixed top-0 w-full bg-white/95 backdrop-blur neo-border-2 border-t-0 border-l-0 border-r-0 z-50 transition-all">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 bg-martin-900 neo-border-2 flex items-center justify-center text-white font-grotesk font-bold text-lg">M</div>
+    <div class="flex items-center gap-2">
+      <span class="font-grotesk font-bold text-dark text-sm hidden md:block">Le Martin x VisionIA</span>
+      <span class="badge-suite hidden md:block">PARTIE 2</span>
+    </div>
+  </div>
+  <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+    <a href="#recap" class="text-dark hover:text-neo-blue">Récap</a>
+    <a href="#emails" class="text-dark hover:text-neo-blue">Vos emails</a>
+    <a href="#architecture" class="text-dark hover:text-neo-blue">Architecture</a>
+    <a href="#memoire" class="text-dark hover:text-neo-blue">Mémoire IA</a>
+    <a href="#stack" class="text-dark hover:text-neo-blue">Stack</a>
+    <a href="#securite" class="text-dark hover:text-neo-blue">Sécurité</a>
+    <a href="#couts" class="text-dark hover:text-neo-blue">Coûts</a>
+    <a href="#vendredi" class="text-dark hover:text-neo-blue">Vendredi</a>
+  </div>
+  <a href="https://wa.me/33626105640" target="_blank" class="neo-btn bg-neo-blue text-dark px-4 py-2 text-sm">WhatsApp &rarr;</a>
+</div>
+</nav>
+
+<!-- ============================================ -->
+<!-- HERO — PARTIE 2 -->
+<!-- ============================================ -->
+<section class="min-h-screen pt-24 pb-16 relative overflow-hidden">
+<div class="absolute top-20 right-10 w-32 h-32 bg-neo-purple neo-border rounded-full float opacity-40"></div>
+<div class="absolute bottom-20 left-10 w-24 h-24 bg-neo-blue neo-border rounded-full float opacity-30" style="animation-delay:.5s"></div>
+<div class="absolute top-40 left-1/4 w-16 h-16 bg-neo-yellow neo-border rotate-45 float opacity-40" style="animation-delay:1s"></div>
+<div class="max-w-7xl mx-auto px-4 pt-16">
+  <div class="flex flex-col lg:flex-row items-center gap-12">
+    <div class="flex-1 space-y-8">
+      <div class="flex items-center gap-3">
+        <div class="inline-block bg-neo-purple text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">PARTIE 2</div>
+        <div class="inline-block bg-neo-blue neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">SUITE TECHNIQUE</div>
+      </div>
+      <h1 class="font-grotesk text-5xl md:text-7xl font-bold text-dark leading-[1.1]">
+        On passe aux <span class="gradient-text">choses concrètes</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-xl leading-relaxed">
+        Suite de notre échange du <strong>25 février</strong> — voici exactement comment on va construire votre solution, ce dont on a besoin, et les prochaines étapes.
+      </p>
+      <div class="neo-card bg-neo-yellow/30 p-4 max-w-lg">
+        <p class="text-sm"><strong>Ce document est la suite directe de la Partie 1.</strong> On ne revient pas sur les bases — ici, on rentre dans le concret technique après notre discussion.</p>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="#recap" class="neo-btn bg-neo-purple text-white px-8 py-4 text-lg font-grotesk">
+          Voir le récap &darr;
+        </a>
+        <a href="#vendredi" class="neo-btn bg-white text-dark px-8 py-4 text-lg font-grotesk">
+          Prochaine étape &rarr;
+        </a>
+      </div>
+    </div>
+    <div class="flex-1 relative">
+      <div class="relative">
+        <img src="https://www.lemartinhotel.com/wp-content/uploads/2022/08/AMBIANCEPISCINE©LEROI-scaled.jpg" alt="Piscine Le Martin Hotel" class="img-neo rounded-sm w-full" onerror="this.src='images/suite-marius.png'">
+        <div class="sticker bg-neo-purple text-white top-[-15px] left-[-15px]">PARTIE 2</div>
+        <div class="sticker bg-neo-yellow bottom-4 right-[-10px] rotate-[8deg]">FÉVRIER 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- BANDEAU DÉFILANT -->
+<!-- ============================================ -->
+<section class="bg-dark neo-border-2 border-l-0 border-r-0 py-4 overflow-hidden">
+<div class="marquee whitespace-nowrap">
+  <span class="inline-block text-white font-grotesk font-bold text-lg mx-8">&#9733; PYTHON SUR MESURE</span>
+  <span class="inline-block text-neo-yellow font-grotesk font-bold text-lg mx-8">&#9733; MÉMOIRE IA SUPABASE</span>
+  <span class="inline-block text-neo-blue font-grotesk font-bold text-lg mx-8">&#9733; ZÉRO TRACE N8N</span>
+  <span class="inline-block text-neo-pink font-grotesk font-bold text-lg mx-8">&#9733; OUTLOOK CONNECTÉ</span>
+  <span class="inline-block text-white font-grotesk font-bold text-lg mx-8">&#9733; ANTHROPIC CLAUDE</span>
+  <span class="inline-block text-neo-green font-grotesk font-bold text-lg mx-8">&#9733; VPS HOSTINGER</span>
+  <span class="inline-block text-neo-purple font-grotesk font-bold text-lg mx-8">&#9733; CALL VENDREDI</span>
+  <span class="inline-block text-white font-grotesk font-bold text-lg mx-8">&#9733; PYTHON SUR MESURE</span>
+  <span class="inline-block text-neo-yellow font-grotesk font-bold text-lg mx-8">&#9733; MÉMOIRE IA SUPABASE</span>
+  <span class="inline-block text-neo-blue font-grotesk font-bold text-lg mx-8">&#9733; ZÉRO TRACE N8N</span>
+  <span class="inline-block text-neo-pink font-grotesk font-bold text-lg mx-8">&#9733; OUTLOOK CONNECTÉ</span>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CE QU'ON A RETENU DU CALL -->
+<!-- ============================================ -->
+<section id="recap" class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-blue neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">NOTRE ÉCHANGE DU 25 FÉVRIER</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Ce qu'on a retenu</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Voici les points clés de notre discussion. On a bien compris votre situation et vos besoins.</p>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="neo-card bg-neo-red/10 p-6 space-y-3">
+      <div class="text-3xl">&#9200;</div>
+      <h3 class="font-grotesk font-bold text-lg">5-6h / jour sur les emails</h3>
+      <p class="text-sm text-gray-600">Marion passe la majeure partie de sa journée à répondre aux emails clients. C'est du temps qui pourrait être consacré à l'accueil et au service sur place.</p>
+    </div>
+    <div class="neo-card bg-neo-blue/10 p-6 space-y-3">
+      <div class="text-3xl">&#128172;</div>
+      <h3 class="font-grotesk font-bold text-lg">Les clients préfèrent l'email</h3>
+      <p class="text-sm text-gray-600">Vous avez testé un chatbot (iGifi) — peu de retours. Avec 6 chambres, vos clients rentrent en contact par email directement. C'est là qu'il faut agir.</p>
+    </div>
+    <div class="neo-card bg-neo-purple/10 p-6 space-y-3">
+      <div class="text-3xl">&#10084;</div>
+      <h3 class="font-grotesk font-bold text-lg">Le suivi personnalisé, c'est votre force</h3>
+      <p class="text-sm text-gray-600">Vos clients se sentent pris en charge comme par un concierge personnel. 8 personnes pour 6 chambres — c'est ça qui fait Le Martin. L'IA ne doit pas casser ça.</p>
+    </div>
+    <div class="neo-card bg-neo-orange/10 p-6 space-y-3">
+      <div class="text-3xl">&#128260;</div>
+      <h3 class="font-grotesk font-bold text-lg">Des échanges longs (10+ emails)</h3>
+      <p class="text-sm text-gray-600">Certains clients font des allers-retours sur 2 jours avec 10 emails avant de finaliser. L'IA doit suivre tout le fil sans perdre le contexte.</p>
+    </div>
+    <div class="neo-card bg-neo-green/10 p-6 space-y-3">
+      <div class="text-3xl">&#9875;</div>
+      <h3 class="font-grotesk font-bold text-lg">Connaissances locales</h3>
+      <p class="text-sm text-gray-600">Horaires des bateaux d'Anguilla et Saint-Barth, restaurants partenaires, transferts... L'IA doit maîtriser tout ça pour répondre intelligemment.</p>
+    </div>
+    <div class="neo-card bg-neo-yellow/20 p-6 space-y-3">
+      <div class="text-3xl">&#128161;</div>
+      <h3 class="font-grotesk font-bold text-lg">Escalade + apprentissage</h3>
+      <p class="text-sm text-gray-600">Quand c'est trop complexe, vous prenez le relais. Et vos réponses sont logguées pour que l'IA apprenne de vous au fil du temps.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GALERIE HÔTEL -->
+<!-- ============================================ -->
+<section class="py-20 bg-martin-50">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-12 space-y-4">
+    <div class="inline-block bg-martin-900 text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">LE MARTIN BOUTIQUE HÔTEL</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Un écrin qu'on connaît bien</h2>
+    <p class="text-xl text-gray-600">On a étudié votre hôtel en détail. Chaque réponse de l'IA reflétera l'identité de ces lieux.</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="col-span-2 row-span-2">
+      <img src="../Capture d'écran 2026-02-24 133612.png" alt="Suite de Marius" class="img-neo w-full h-full object-cover">
+    </div>
+    <div>
+      <img src="../Capture d'écran 2026-02-24 133634.png" alt="La chambre de Pierre" class="img-neo w-full h-48 object-cover">
+    </div>
+    <div>
+      <img src="https://www.lemartinhotel.com/wp-content/uploads/2022/08/AMBIANCEPISCINE©LEROI-scaled.jpg" alt="Piscine Le Martin" class="img-neo w-full h-48 object-cover" onerror="this.src='images/suite-marius.png'">
+    </div>
+    <div>
+      <img src="../Capture d'écran 2026-02-24 133652.png" alt="Terrasse" class="img-neo w-full h-48 object-cover">
+    </div>
+    <div>
+      <img src="../Capture d'écran 2026-02-24 133552.png" alt="Chambre détail" class="img-neo w-full h-48 object-cover">
+    </div>
+  </div>
+  <div class="grid grid-cols-3 gap-4 mt-4">
+    <div>
+      <img src="https://www.lemartinhotel.com/wp-content/uploads/2022/08/SETUPDEJEUNERNET©LEROI-scaled.jpg" alt="Petit déjeuner Le Martin" class="img-neo w-full h-40 object-cover" onerror="this.src='images/chambre-pierre.png'">
+    </div>
+    <div>
+      <img src="https://www.lemartinhotel.com/wp-content/uploads/2022/09/LEMARTINHOTELVUEMER©LEROI-scaled.jpg" alt="Vue mer Le Martin" class="img-neo w-full h-40 object-cover" onerror="this.src='images/suite-detail-1.png'">
+    </div>
+    <div>
+      <img src="https://www.lemartinhotel.com/wp-content/uploads/2022/08/ENTREELOBBYMARTIN©LEROI-scaled.jpg" alt="Lobby Le Martin" class="img-neo w-full h-40 object-cover" onerror="this.src='images/suite-detail-2.png'">
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- VOS VRAIS EMAILS — INTRODUCTION -->
+<!-- ============================================ -->
+<section id="emails" class="py-20 bg-dark text-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-yellow neo-border-2 px-4 py-1 font-grotesk font-bold text-sm text-dark">VOS VRAIS EMAILS</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold">On a analysé vos cas réels</h2>
+    <p class="text-xl text-gray-400 max-w-3xl mx-auto">Vous nous avez envoyé des exemples d'échanges avec vos clients. Voici comment l'IA les aurait gérés — sans intervention humaine.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-8">
+    <!-- Cas Linda -->
+    <div class="neo-card bg-white/5 p-8 space-y-4">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-neo-blue neo-border-2 rounded-full flex items-center justify-center text-white font-bold">L</div>
+        <div>
+          <p class="font-bold">Linda</p>
+          <p class="text-xs text-gray-400">Réservation + restaurants</p>
+        </div>
+      </div>
+      <div class="space-y-2 text-sm text-gray-300">
+        <p>&#8594; 30e anniversaire de mariage avec Joe</p>
+        <p>&#8594; Séjour du 9 au 17 mars (Marthe's suite)</p>
+        <p>&#8594; Demande 4 réservations restaurants</p>
+        <p>&#8594; Horaires alternatifs, préférences de tables</p>
+      </div>
+      <div class="bg-neo-blue/20 neo-border-2 p-3 text-xs">
+        <p class="font-bold text-neo-blue">L'IA gère : &#10003;</p>
+        <p class="text-gray-400">Connaît les restaurants locaux, coordonne avec la conciergerie, sait que Linda est en suite Marthe.</p>
+      </div>
+    </div>
+    <!-- Cas Shiana -->
+    <div class="neo-card bg-white/5 p-8 space-y-4">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-neo-pink neo-border-2 rounded-full flex items-center justify-center text-white font-bold">S</div>
+        <div>
+          <p class="font-bold">Shiana</p>
+          <p class="text-xs text-gray-400">Disponibilités + tarifs</p>
+        </div>
+      </div>
+      <div class="space-y-2 text-sm text-gray-300">
+        <p>&#8594; Anniversaire, 3 personnes, 2 chambres</p>
+        <p>&#8594; Avril complet &rarr; alternatives proposées</p>
+        <p>&#8594; 4 options différentes avec tarifs</p>
+        <p>&#8594; Choix Option 3 : mai 4-9, 4 477&euro;</p>
+      </div>
+      <div class="bg-neo-green/20 neo-border-2 p-3 text-xs">
+        <p class="font-bold text-neo-green">L'IA gère : &#10003;</p>
+        <p class="text-gray-400">Vérifie Thaïs, propose des alternatives, calcule les tarifs Advance Purchase et Flexible.</p>
+      </div>
+    </div>
+    <!-- Cas Nina -->
+    <div class="neo-card bg-white/5 p-8 space-y-4">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-neo-orange neo-border-2 rounded-full flex items-center justify-center text-white font-bold">N</div>
+        <div>
+          <p class="font-bold">Nina</p>
+          <p class="text-xs text-gray-400">10+ emails, changements multiples</p>
+        </div>
+      </div>
+      <div class="space-y-2 text-sm text-gray-300">
+        <p>&#8594; Réservation 2 pers. &rarr; ajout 3e personne</p>
+        <p>&#8594; Changement de dates (2 fois)</p>
+        <p>&#8594; Family Suite vs 2 chambres séparées</p>
+        <p>&#8594; Comparaison prix, remise -10%</p>
+      </div>
+      <div class="bg-neo-orange/20 neo-border-2 p-3 text-xs">
+        <p class="font-bold text-neo-orange">L'IA gère ~80% &#9888;</p>
+        <p class="text-gray-400">Gère les changements et comparaisons. Escalade uniquement pour le lien de paiement.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- L'IA EN ACTION — CAS NINA DÉTAILLÉ -->
+<!-- ============================================ -->
+<section class="py-20 bg-white">
+<div class="max-w-5xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-orange text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">CAS RÉEL DÉTAILLÉ</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Le cas Nina — 10 emails en 48h</h2>
+    <p class="text-xl text-gray-600">C'est exactement le type d'échange dont vous nous avez parlé. Voici comment l'IA l'aurait géré.</p>
+  </div>
+
+  <!-- Timeline du cas -->
+  <div class="space-y-4 max-w-3xl mx-auto">
+    <!-- Email 1 -->
+    <div class="neo-card bg-neo-green/10 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 bg-neo-green text-white flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0 rounded-full">&#10003;</div>
+      <div>
+        <p class="font-bold text-sm">Nina : "Je confirme ma réservation pour 3 personnes"</p>
+        <p class="text-xs text-gray-500 mt-1">&#129302; L'IA vérifie Thaïs, confirme la chambre, ajoute le 3e invité — <strong>répond en 30s</strong></p>
+      </div>
+    </div>
+    <!-- Email 2 -->
+    <div class="neo-card bg-neo-green/10 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 bg-neo-green text-white flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0 rounded-full">&#10003;</div>
+      <div>
+        <p class="font-bold text-sm">Nina : "Je veux changer mes dates pour le 28 avril au 1er mai"</p>
+        <p class="text-xs text-gray-500 mt-1">&#129302; L'IA vérifie la disponibilité sur Thaïs, met à jour, confirme les nouvelles dates — <strong>automatique</strong></p>
+      </div>
+    </div>
+    <!-- Email 3 -->
+    <div class="neo-card bg-neo-green/10 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 bg-neo-green text-white flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0 rounded-full">&#10003;</div>
+      <div>
+        <p class="font-bold text-sm">Nina : "C'est quoi la différence entre la Family Suite et 2 chambres ?"</p>
+        <p class="text-xs text-gray-500 mt-1">&#129302; L'IA connaît chaque chambre — compare les m², les vues, les prix. Recommande la meilleure option — <strong>automatique</strong></p>
+      </div>
+    </div>
+    <!-- Email 4 -->
+    <div class="neo-card bg-neo-green/10 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 bg-neo-green text-white flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0 rounded-full">&#10003;</div>
+      <div>
+        <p class="font-bold text-sm">Nina : "Finalement, je prends les 2 chambres séparées avec la remise -10%"</p>
+        <p class="text-xs text-gray-500 mt-1">&#129302; L'IA applique le tarif Advance Purchase, génère le devis avec les conditions — <strong>automatique</strong></p>
+      </div>
+    </div>
+    <!-- Email 5 - Escalade -->
+    <div class="neo-card bg-neo-red/10 p-4 flex items-start gap-4 border-neo-red">
+      <div class="w-8 h-8 bg-neo-red text-white flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0 rounded-full">!</div>
+      <div>
+        <p class="font-bold text-sm text-neo-red">Nina : "Les 2 liens de paiement n'ont pas le même prix"</p>
+        <p class="text-xs text-gray-500 mt-1">&#9888; Problème technique de paiement &rarr; <strong>Escalade vers Emmanuel/Marion</strong>. L'IA envoie un accusé de réception et vous notifie.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résultat -->
+  <div class="text-center mt-12">
+    <div class="inline-block neo-card bg-neo-yellow p-8">
+      <p class="font-grotesk text-lg font-bold mb-2">RÉSULTAT SUR CES 10 EMAILS</p>
+      <div class="flex justify-center gap-8">
+        <div>
+          <p class="font-grotesk text-4xl font-bold text-neo-green">8</p>
+          <p class="text-sm text-gray-600">gérés par l'IA</p>
+        </div>
+        <div>
+          <p class="font-grotesk text-4xl font-bold text-neo-red">2</p>
+          <p class="text-sm text-gray-600">escaladés vers vous</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 mt-4">Marion aurait économisé ~2h sur ce seul dossier.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CAS LINDA — RESTAURANTS -->
+<!-- ============================================ -->
+<section class="py-20 bg-martin-50">
+<div class="max-w-5xl mx-auto px-4">
+  <div class="text-center mb-12 space-y-4">
+    <div class="inline-block bg-neo-blue neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">CAS RÉEL — LINDA</div>
+    <h2 class="font-grotesk text-3xl md:text-4xl font-bold text-dark">La mémoire IA en action</h2>
+    <p class="text-xl text-gray-600">Linda revient chaque année. L'IA la reconnaît et personnalise chaque réponse.</p>
+  </div>
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="space-y-6">
+      <div class="neo-card bg-white p-6 space-y-3">
+        <h3 class="font-grotesk font-bold">Ce que l'IA sait sur Linda :</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> Séjour prévu : 9-17 mars 2026, suite Marthe</div>
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> 30e anniversaire de mariage avec Joe</div>
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> Bouteille de champagne offerte (changement de suite)</div>
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> A déjà réservé au Bistro Caraïbes</div>
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> Le Tropicana est un de ses restaurants favoris</div>
+          <div class="flex items-center gap-2"><span class="text-neo-blue">&#9679;</span> Réf. réservation : LMH7414</div>
+        </div>
+      </div>
+      <div class="neo-card bg-neo-blue/10 p-6">
+        <h3 class="font-grotesk font-bold text-sm mb-2">&#129302; CE QUE L'IA FAIT AUTOMATIQUEMENT :</h3>
+        <div class="space-y-2 text-sm text-gray-600">
+          <p>&#10003; Reconnaît Linda grâce à son email</p>
+          <p>&#10003; Accède à son historique complet dans Supabase</p>
+          <p>&#10003; Transmet les demandes de réservation restaurant à la conciergerie</p>
+          <p>&#10003; Personnalise : "Pour votre anniversaire, nous vous recommandons aussi..."</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img src="../Capture d'écran 2026-02-24 133507.png" alt="Exemple email" class="img-neo w-full">
+      <p class="text-xs text-gray-500 mt-3 text-center">Exemple d'email entrant sur info@lemartinhotel.com</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- POURQUOI PAS N8N -->
+<!-- ============================================ -->
+<section id="architecture" class="py-20 bg-dark text-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-red text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">CHANGEMENT IMPORTANT</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold">Pourquoi on n'utilise pas n8n</h2>
+    <p class="text-xl text-gray-400 max-w-3xl mx-auto">Dans la Partie 1, on parlait de n8n comme orchestrateur. On a changé d'approche, et voici pourquoi.</p>
+  </div>
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div class="space-y-6">
+      <div class="neo-card bg-neo-red/20 p-6 border-neo-red">
+        <h3 class="font-grotesk font-bold text-lg text-neo-red mb-3">&#10007; Le problème avec n8n</h3>
+        <p class="text-gray-300 mb-4">Quand n8n envoie un email en votre nom, il ajoute une petite mention dans le message :</p>
+        <div class="bg-white/10 neo-border-2 p-4 text-center">
+          <p class="text-sm text-gray-400 italic">"Envoyé depuis n8n"</p>
+        </div>
+        <p class="text-sm text-gray-400 mt-4">Pour un hôtel de luxe comme Le Martin, c'est inacceptable. Vos clients ne doivent jamais voir qu'un outil tiers est derrière les réponses.</p>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <div class="neo-card bg-neo-green/20 p-6 border-neo-green">
+        <h3 class="font-grotesk font-bold text-lg text-neo-green mb-3">&#10003; Notre solution : Python sur mesure</h3>
+        <p class="text-gray-300 mb-4">On code l'automatisation <strong>directement en Python</strong>, de A à Z. Résultat :</p>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="text-neo-green font-bold">&#10003;</span>
+            <span>Aucune mention, aucun footer, aucune trace</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-neo-green font-bold">&#10003;</span>
+            <span>L'email vient exactement de votre Outlook</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-neo-green font-bold">&#10003;</span>
+            <span>Votre signature, votre format, votre identité</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-neo-green font-bold">&#10003;</span>
+            <span>Contrôle total sur chaque détail technique</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-neo-green font-bold">&#10003;</span>
+            <span>100% invisible pour le client</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- NOUVELLE ARCHITECTURE -->
+<!-- ============================================ -->
+<section class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-dark text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">ARCHITECTURE TECHNIQUE</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Comment tout est connecté</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Un système Python sur mesure qui connecte votre Outlook, Claude IA, Thaïs et la mémoire Supabase.</p>
+  </div>
+  <!-- Schéma visuel -->
+  <div class="neo-card bg-gray-50 p-8 md:p-12 max-w-4xl mx-auto">
+    <div class="text-center font-grotesk text-sm space-y-6">
+      <!-- Row 1 : Outlook -->
+      <div class="neo-card bg-neo-blue p-4 inline-block">
+        <strong>&#9993; OUTLOOK</strong><br>info@lemartinhotel.com<br><span class="text-xs">Votre boîte email</span>
+      </div>
+      <div class="text-3xl">&#8595;</div>
+      <!-- Row 2 : Python -->
+      <div class="neo-card bg-neo-purple text-white p-6 inline-block">
+        <strong>&#128013; PYTHON — AUTOMATISATION SUR MESURE</strong><br>Hébergé sur VPS Hostinger<br><span class="text-xs">Lit les emails &bull; Coordonne tout &bull; Envoie les réponses</span>
+      </div>
+      <div class="flex justify-center gap-8 mt-4">
+        <div class="text-3xl">&#8601;</div>
+        <div class="text-3xl">&#8595;</div>
+        <div class="text-3xl">&#8600;</div>
+      </div>
+      <div class="flex flex-col md:flex-row justify-center gap-6">
+        <!-- Claude -->
+        <div class="neo-card bg-neo-yellow p-4">
+          <strong>&#129302; CLAUDE IA</strong><br>Anthropic API<br><span class="text-xs">Comprend &bull; Rédige</span>
+        </div>
+        <!-- Supabase -->
+        <div class="neo-card bg-neo-pink text-white p-4">
+          <strong>&#128218; SUPABASE</strong><br>Mémoire IA<br><span class="text-xs">Historique &bull; Clients &bull; Logs</span>
+        </div>
+        <!-- Thais -->
+        <div class="neo-card bg-neo-green text-white p-4">
+          <strong>&#128202; THAÏS PMS</strong><br>API ouverte<br><span class="text-xs">Dispos &bull; Tarifs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-8">
+    <p class="text-sm text-gray-500">Tout tourne sur un VPS Hostinger. Pas de n8n, pas d'outil tiers visible. Juste du code Python propre.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- MÉMOIRE IA — SUPABASE -->
+<!-- ============================================ -->
+<section id="memoire" class="py-20 bg-neo-purple/5">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-purple text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">MÉMOIRE IA</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Supabase — le cerveau de l'IA</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">C'est ici que l'IA stocke tout ce qu'elle sait sur vos clients. C'est ça qui fait la différence entre un bot et un vrai assistant.</p>
+  </div>
+  <div class="grid md:grid-cols-2 gap-12 items-start">
+    <div class="space-y-6">
+      <div class="neo-card bg-white p-6 space-y-4">
+        <h3 class="font-grotesk font-bold text-xl">Comment ça marche, simplement</h3>
+        <p class="text-gray-600">Supabase, c'est une base de données en ligne. On y stocke l'historique de chaque client qui vous contacte.</p>
+        <p class="text-gray-600">Quand Linda vous recontacte l'année prochaine, l'IA sait déjà :</p>
+        <div class="space-y-2 text-sm">
+          <div class="bg-neo-purple/10 neo-border-2 p-3">&#128100; Qui elle est (nom, email, préférences)</div>
+          <div class="bg-neo-purple/10 neo-border-2 p-3">&#127968; Dans quelle chambre elle a séjourné (Marthe)</div>
+          <div class="bg-neo-purple/10 neo-border-2 p-3">&#127860; Ses restaurants favoris (Le Tropicana)</div>
+          <div class="bg-neo-purple/10 neo-border-2 p-3">&#127881; Son contexte (anniversaire de mariage)</div>
+          <div class="bg-neo-purple/10 neo-border-2 p-3">&#128172; Tous les échanges précédents</div>
+        </div>
+      </div>
+      <div class="neo-card bg-neo-yellow/30 p-6">
+        <h3 class="font-grotesk font-bold text-sm mb-2">&#128161; ET AUSSI :</h3>
+        <p class="text-sm text-gray-600">Quand vous répondez vous-même (en cas d'escalade), votre réponse est aussi stockée. L'IA apprend de vos réponses humaines pour s'améliorer au fil du temps.</p>
+      </div>
+      <div class="neo-card bg-white p-6">
+        <h3 class="font-grotesk font-bold mb-3">Le plan gratuit suffit ?</h3>
+        <p class="text-gray-600 text-sm mb-3"><strong>Oui, largement.</strong> Le plan Free de Supabase offre :</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span>Base de données</span><span class="font-bold">500 Mo</span></div>
+          <div class="flex justify-between"><span>Stockage fichiers</span><span class="font-bold">1 Go</span></div>
+          <div class="flex justify-between"><span>Requêtes API</span><span class="font-bold">Illimitées</span></div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3">Pour un hôtel de 6 chambres avec ~45 emails/mois, le plan gratuit tiendra facilement pendant des années. Si un jour il faut passer au Pro, c'est 25$/mois.</p>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <img src="../Capture d'écran 2026-02-25 163840.png" alt="Supabase Database" class="img-neo w-full">
+      <p class="text-xs text-gray-500 text-center">Interface Supabase — la base de données où l'IA stocke la mémoire client</p>
+      <div class="neo-card bg-dark text-white p-6">
+        <h3 class="font-grotesk font-bold mb-4">Créer votre compte Supabase</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-3">
+            <span class="bg-neo-purple text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">1</span>
+            <p>Allez sur <a href="https://supabase.com" target="_blank" class="text-neo-blue underline font-bold">supabase.com</a></p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="bg-neo-purple text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">2</span>
+            <p>Cliquez sur <strong>"Start your project"</strong></p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="bg-neo-purple text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">3</span>
+            <p>Créez un compte avec votre email</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="bg-neo-purple text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">4</span>
+            <p>Choisissez le plan <strong>Free</strong> — c'est suffisant</p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <a href="https://supabase.com" target="_blank" class="neo-btn bg-neo-purple text-white px-6 py-3 text-sm w-full text-center block">Créer mon compte Supabase &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- LA STACK — CE QUE VOUS DEVEZ PRENDRE -->
+<!-- ============================================ -->
+<section id="stack" class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-green text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">LA STACK TECHNIQUE</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Les 3 comptes à créer</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Voici les services dont on a besoin. C'est simple — 3 comptes à créer, et on s'occupe de tout le reste.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-8">
+
+    <!-- VPS Hostinger -->
+    <div class="neo-card bg-white p-8 space-y-6 relative overflow-hidden">
+      <div class="ribbon bg-neo-green text-white">OBLIGATOIRE</div>
+      <div class="flex items-center gap-3 mt-4">
+        <div class="w-12 h-12 bg-neo-purple neo-border-2 rounded flex items-center justify-center font-grotesk font-bold text-white text-sm">VPS</div>
+        <div>
+          <p class="font-bold text-lg">VPS Hostinger</p>
+          <p class="text-xs text-gray-500">Le serveur qui fait tourner tout</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600">C'est le serveur sur lequel tourne le script Python. Il est allumé 24h/24 et traite vos emails en continu.</p>
+      <div class="bg-gray-50 neo-border-2 p-4 space-y-2 text-sm">
+        <p class="font-bold">Plan recommandé : KVM 1</p>
+        <div class="flex justify-between"><span class="text-gray-500">vCPU</span><span class="font-bold">1</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">RAM</span><span class="font-bold">4 Go</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">SSD</span><span class="font-bold">50 Go</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">Bande passante</span><span class="font-bold">1 To</span></div>
+        <hr>
+        <div class="flex justify-between text-lg"><span class="font-bold">Coût</span><span class="font-bold text-neo-green">~5,99&euro;/mois</span></div>
+      </div>
+      <a href="https://www.hostinger.fr/serveur-vps" target="_blank" class="neo-btn bg-neo-purple text-white px-6 py-3 text-sm w-full text-center block">Voir les offres VPS Hostinger &rarr;</a>
+    </div>
+
+    <!-- Anthropic -->
+    <div class="neo-card bg-white p-8 space-y-6 relative overflow-hidden">
+      <div class="ribbon bg-neo-green text-white">OBLIGATOIRE</div>
+      <div class="flex items-center gap-3 mt-4">
+        <div class="w-12 h-12 bg-neo-yellow neo-border-2 rounded flex items-center justify-center font-grotesk font-bold text-sm">&#129302;</div>
+        <div>
+          <p class="font-bold text-lg">Anthropic (Claude IA)</p>
+          <p class="text-xs text-gray-500">L'intelligence derrière les réponses</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600">Claude, c'est l'IA qui lit, comprend et rédige les réponses à vos clients. C'est le moteur du système.</p>
+      <div class="bg-gray-50 neo-border-2 p-4 space-y-2 text-sm">
+        <p class="font-bold">Ce qu'il faut faire :</p>
+        <div class="flex items-start gap-2">
+          <span class="text-neo-green font-bold">1.</span>
+          <span>Créer un compte sur la console Anthropic</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-neo-green font-bold">2.</span>
+          <span>Aller dans <strong>Settings &rarr; Billing</strong></span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-neo-green font-bold">3.</span>
+          <span>Ajouter une carte bancaire</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-neo-green font-bold">4.</span>
+          <span>Créditer <strong>10&euro;</strong> pour commencer</span>
+        </div>
+        <hr>
+        <div class="flex justify-between text-lg"><span class="font-bold">Coût estimé</span><span class="font-bold text-neo-green">~5-10&euro;/mois</span></div>
+      </div>
+      <a href="https://console.anthropic.com" target="_blank" class="neo-btn bg-neo-yellow text-dark px-6 py-3 text-sm w-full text-center block">Créer mon compte Anthropic &rarr;</a>
+    </div>
+
+    <!-- Supabase -->
+    <div class="neo-card bg-white p-8 space-y-6 relative overflow-hidden">
+      <div class="ribbon bg-neo-blue text-white">GRATUIT</div>
+      <div class="flex items-center gap-3 mt-4">
+        <div class="w-12 h-12 bg-neo-pink neo-border-2 rounded flex items-center justify-center font-grotesk font-bold text-white text-sm">DB</div>
+        <div>
+          <p class="font-bold text-lg">Supabase</p>
+          <p class="text-xs text-gray-500">La mémoire de l'IA</p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600">La base de données qui stocke l'historique des clients, les conversations et les logs. L'IA puise dedans pour personnaliser.</p>
+      <div class="bg-gray-50 neo-border-2 p-4 space-y-2 text-sm">
+        <p class="font-bold">Plan Free — suffisant :</p>
+        <div class="flex justify-between"><span class="text-gray-500">Base de données</span><span class="font-bold">500 Mo</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">Stockage</span><span class="font-bold">1 Go</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">Requêtes</span><span class="font-bold">Illimitées</span></div>
+        <div class="flex justify-between"><span class="text-gray-500">Auth</span><span class="font-bold">50 000 MAU</span></div>
+        <hr>
+        <div class="flex justify-between text-lg"><span class="font-bold">Coût</span><span class="font-bold text-neo-green">0&euro;/mois</span></div>
+      </div>
+      <a href="https://supabase.com" target="_blank" class="neo-btn bg-neo-pink text-white px-6 py-3 text-sm w-full text-center block">Créer mon compte Supabase &rarr;</a>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CONNEXION OUTLOOK -->
+<!-- ============================================ -->
+<section class="py-20 bg-neo-blue/5">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div class="space-y-6">
+      <div class="inline-block bg-neo-blue neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">VOTRE BOÎTE EMAIL</div>
+      <h2 class="font-grotesk text-3xl md:text-4xl font-bold text-dark">Connexion Outlook</h2>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        Votre adresse <strong>info@lemartinhotel.com</strong> est sur Outlook. On va connecter notre système directement dessus pour lire et répondre aux emails.
+      </p>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        Les emails envoyés par l'IA partent exactement depuis votre adresse Outlook. Le client ne voit aucune différence.
+      </p>
+      <div class="neo-card bg-white p-6 space-y-3">
+        <h3 class="font-grotesk font-bold">Ce qu'on a besoin de votre côté :</h3>
+        <div class="space-y-3">
+          <div class="bg-neo-blue/10 neo-border-2 p-4 flex items-start gap-3">
+            <span class="bg-neo-blue text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">1</span>
+            <div>
+              <p class="font-bold text-sm">Accès administrateur à votre compte Microsoft 365</p>
+              <p class="text-xs text-gray-500">On vous guidera pour générer un accès sécurisé (App Password ou OAuth)</p>
+            </div>
+          </div>
+          <div class="bg-neo-blue/10 neo-border-2 p-4 flex items-start gap-3">
+            <span class="bg-neo-blue text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">2</span>
+            <div>
+              <p class="font-bold text-sm">Votre signature email actuelle</p>
+              <p class="text-xs text-gray-500">On la reproduira à l'identique dans les réponses automatiques</p>
+            </div>
+          </div>
+          <div class="bg-neo-blue/10 neo-border-2 p-4 flex items-start gap-3">
+            <span class="bg-neo-blue text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">3</span>
+            <div>
+              <p class="font-bold text-sm">L'adresse de notification (escalade)</p>
+              <p class="text-xs text-gray-500">Où on vous envoie les alertes quand l'IA a besoin de vous</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <div class="neo-card bg-dark text-white p-8 space-y-4">
+        <h3 class="font-grotesk text-xl font-bold">Comment ça fonctionne techniquement</h3>
+        <div class="space-y-4 text-sm">
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right font-bold text-neo-blue">Lecture</div>
+            <div class="w-8 text-center text-neo-green text-xl">&rarr;</div>
+            <div>Le script Python lit vos nouveaux emails via l'API Microsoft Graph</div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right font-bold text-neo-purple">Analyse</div>
+            <div class="w-8 text-center text-neo-green text-xl">&rarr;</div>
+            <div>Claude IA analyse le contenu + check Supabase</div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right font-bold text-neo-yellow">Thaïs</div>
+            <div class="w-8 text-center text-neo-green text-xl">&rarr;</div>
+            <div>Vérification des dispos et tarifs en temps réel</div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right font-bold text-neo-green">Envoi</div>
+            <div class="w-8 text-center text-neo-green text-xl">&rarr;</div>
+            <div>Réponse envoyée depuis votre Outlook — zéro trace</div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-20 text-right font-bold text-neo-pink">Log</div>
+            <div class="w-8 text-center text-neo-green text-xl">&rarr;</div>
+            <div>Tout est sauvegardé dans Supabase</div>
+          </div>
+        </div>
+      </div>
+      <div class="neo-card bg-neo-yellow/30 p-4 text-center">
+        <p class="text-sm font-bold">&#128274; Vos identifiants ne sont jamais partagés. Ils sont stockés de manière chiffrée sur le VPS.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- MODE BROUILLON — PREMIÈRE SEMAINE -->
+<!-- ============================================ -->
+<section class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div class="neo-card bg-neo-yellow/20 p-8 space-y-6">
+      <div class="text-5xl text-center">&#128221;</div>
+      <h3 class="font-grotesk text-2xl font-bold text-center">Mode Brouillon</h3>
+      <p class="text-center text-gray-600">La première semaine, aucun email ne part automatiquement.</p>
+      <div class="space-y-3">
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-neo-yellow w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">1</span>
+          <p class="text-sm">L'IA reçoit l'email et rédige sa réponse</p>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-neo-yellow w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">2</span>
+          <p class="text-sm">La réponse est mise <strong>en brouillon</strong> dans votre Outlook</p>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-neo-yellow w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">3</span>
+          <p class="text-sm">Vous relisez, vous modifiez si besoin</p>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-neo-yellow w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">4</span>
+          <p class="text-sm">Vous cliquez sur <strong>Envoyer</strong> quand ça vous plaît</p>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 text-center">Chaque correction que vous faites est logguée — l'IA s'améliore à chaque retour.</p>
+    </div>
+    <div class="space-y-6">
+      <div class="inline-block bg-neo-yellow neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">PHASE DE VALIDATION</div>
+      <h2 class="font-grotesk text-3xl md:text-4xl font-bold text-dark">On ne lance rien sans vous</h2>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        C'est exactement ce dont on a discuté pendant notre appel. La première semaine, l'IA prépare les réponses mais <strong>ne les envoie pas</strong>.
+      </p>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        Vous checkez chaque réponse dans vos brouillons Outlook. Si c'est bon, un clic et c'est envoyé. Si quelque chose ne va pas, vous modifiez et on ajuste l'IA.
+      </p>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        Au bout d'une semaine, quand vous êtes confiants, on passe en <strong>mode automatique</strong>. L'IA envoie directement, et vous recevez une copie de chaque réponse pour garder le contrôle.
+      </p>
+      <div class="neo-card bg-neo-green/10 p-4">
+        <p class="text-sm"><strong>Résultat :</strong> Vous validez que tout est parfait avant que le moindre email parte. Aucun risque.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SÉCURITÉ -->
+<!-- ============================================ -->
+<section id="securite" class="py-20 bg-dark text-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-green text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">SÉCURITÉ</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold">Vos données sont protégées</h2>
+    <p class="text-xl text-gray-400 max-w-3xl mx-auto">La sécurité n'est pas une option — c'est un prérequis. Voici comment on protège vos données et celles de vos clients.</p>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="neo-card bg-white/5 p-6 text-center space-y-3">
+      <div class="text-4xl">&#128274;</div>
+      <h3 class="font-grotesk font-bold">Chiffrement SSL/TLS</h3>
+      <p class="text-sm text-gray-400">Toutes les communications sont chiffrées. Emails, API, base de données — tout passe en HTTPS.</p>
+    </div>
+    <div class="neo-card bg-white/5 p-6 text-center space-y-3">
+      <div class="text-4xl">&#128272;</div>
+      <h3 class="font-grotesk font-bold">VPS sécurisé</h3>
+      <p class="text-sm text-gray-400">Accès SSH par clé uniquement. Firewall configuré. Pas de ports ouverts inutiles. Mises à jour régulières.</p>
+    </div>
+    <div class="neo-card bg-white/5 p-6 text-center space-y-3">
+      <div class="text-4xl">&#128218;</div>
+      <h3 class="font-grotesk font-bold">Supabase chiffré</h3>
+      <p class="text-sm text-gray-400">Chiffrement au repos (AES-256). Les données sont protégées même en cas d'accès physique au serveur.</p>
+    </div>
+    <div class="neo-card bg-white/5 p-6 text-center space-y-3">
+      <div class="text-4xl">&#128170;</div>
+      <h3 class="font-grotesk font-bold">Anthropic : pas de stockage</h3>
+      <p class="text-sm text-gray-400">Claude (Anthropic) ne conserve pas les données envoyées via l'API. Vos emails ne sont pas utilisés pour entraîner l'IA.</p>
+    </div>
+  </div>
+  <div class="mt-12 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+    <div class="neo-card bg-white/5 p-6 space-y-3">
+      <h3 class="font-grotesk font-bold text-neo-green">&#10003; Ce qu'on fait</h3>
+      <div class="space-y-2 text-sm text-gray-400">
+        <p>Identifiants chiffrés sur le VPS (variables d'environnement)</p>
+        <p>Sauvegardes automatiques quotidiennes</p>
+        <p>Monitoring du serveur 24/7</p>
+        <p>Logs d'activité consultables</p>
+      </div>
+    </div>
+    <div class="neo-card bg-white/5 p-6 space-y-3">
+      <h3 class="font-grotesk font-bold text-neo-red">&#10007; Ce qu'on ne fait pas</h3>
+      <div class="space-y-2 text-sm text-gray-400">
+        <p>Revente ou partage de données</p>
+        <p>Stockage de données bancaires</p>
+        <p>Accès aux données sans votre accord</p>
+        <p>Transmission à des services tiers non déclarés</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- SYSTÈME DE RÉSERVATION THAÏS -->
+<!-- ============================================ -->
+<section class="py-20 bg-white">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <img src="../Capture d'écran 2026-02-24 133243.png" alt="Calendrier Thaïs" class="img-neo w-full">
+      <p class="text-xs text-gray-500 mt-3 text-center">Votre calendrier de réservation Thaïs — l'IA s'y connecte en temps réel</p>
+    </div>
+    <div class="space-y-6">
+      <div class="inline-block bg-neo-green text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">THAÏS PMS</div>
+      <h2 class="font-grotesk text-3xl md:text-4xl font-bold text-dark">Connecté à votre PMS</h2>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        L'IA vérifie les disponibilités et les tarifs directement dans Thaïs. Pas de prix inventé, pas de chambre indisponible proposée par erreur.
+      </p>
+      <img src="../Capture d'écran 2026-02-24 133216.png" alt="Tarifs Thaïs" class="img-neo w-full">
+      <p class="text-xs text-gray-500 text-center">Tarifs en temps réel : Advance Purchase, Flexible, Lune de Miel</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CE QUE VOUS DEVEZ NOUS FOURNIR -->
+<!-- ============================================ -->
+<section class="py-20 bg-neo-yellow/10">
+<div class="max-w-5xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-orange text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">VOTRE PART</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Ce que vous devez nous fournir</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Pour que le système fonctionne, on a besoin de ces éléments de votre côté. Rien de compliqué — on vous guide pour chaque étape.</p>
+  </div>
+  <div class="space-y-4 max-w-3xl mx-auto">
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-blue flex items-center justify-center neo-border-2 font-grotesk font-bold text-white flex-shrink-0">1</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Accès Outlook (info@lemartinhotel.com)</h3>
+        <p class="text-sm text-gray-600">On vous guidera pour générer un mot de passe d'application sécurisé depuis votre compte Microsoft 365. Ça prend 5 minutes.</p>
+      </div>
+    </div>
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-green text-white flex items-center justify-center neo-border-2 font-grotesk font-bold flex-shrink-0">2</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Clé API Thaïs PMS</h3>
+        <p class="text-sm text-gray-600">Contactez votre account manager Thaïs pour activer l'API. On peut vous aider si besoin. Numéro support : <strong>+33 7 85 45 12 39</strong></p>
+      </div>
+    </div>
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-purple text-white flex items-center justify-center neo-border-2 font-grotesk font-bold flex-shrink-0">3</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Document descriptif de l'hôtel</h3>
+        <p class="text-sm text-gray-600">Description des chambres, services, équipements, politique d'annulation, horaires petit-déjeuner, activités proposées... Tout ce que vous dites habituellement aux clients.</p>
+      </div>
+    </div>
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-pink text-white flex items-center justify-center neo-border-2 font-grotesk font-bold flex-shrink-0">4</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Exemples d'emails (comme ceux envoyés)</h3>
+        <p class="text-sm text-gray-600">Plus on a d'exemples réels, mieux l'IA reproduira votre ton et votre façon de répondre. Les cas Linda, Shiana et Nina sont un excellent début.</p>
+      </div>
+    </div>
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-yellow flex items-center justify-center neo-border-2 font-grotesk font-bold flex-shrink-0">5</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Connaissances locales spécifiques</h3>
+        <p class="text-sm text-gray-600">Horaires des bateaux Anguilla/Saint-Barth, restaurants partenaires avec numéros, informations transferts aéroport, conseils habituels aux clients.</p>
+      </div>
+    </div>
+    <div class="neo-card bg-white p-6 flex items-start gap-4">
+      <div class="w-10 h-10 bg-neo-orange text-white flex items-center justify-center neo-border-2 font-grotesk font-bold flex-shrink-0">6</div>
+      <div>
+        <h3 class="font-grotesk font-bold">Les 3 comptes créés</h3>
+        <p class="text-sm text-gray-600">VPS Hostinger + Compte Anthropic (crédité) + Compte Supabase (gratuit). On vous a mis les liens dans la section précédente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- ESTIMATION DES COÛTS MENSUELS -->
+<!-- ============================================ -->
+<section id="couts" class="py-20 bg-white">
+<div class="max-w-5xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-green text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">COÛTS MENSUELS</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">Estimation de la stack</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Voici ce que coûte la solution au quotidien, une fois en place. Tout est transparent.</p>
+  </div>
+  <div class="max-w-2xl mx-auto space-y-4">
+    <div class="neo-card bg-white p-6 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-lg">VPS Hostinger (KVM 1)</p>
+        <p class="text-sm text-gray-600">Serveur dédié qui fait tourner le script Python 24h/24</p>
+      </div>
+      <div class="font-grotesk text-2xl font-bold text-neo-purple">~5,99&euro;</div>
+    </div>
+    <div class="neo-card bg-white p-6 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-lg">API Claude (Anthropic)</p>
+        <p class="text-sm text-gray-600">~45 emails/mois &times; analyse + réponse = ~90 requêtes</p>
+      </div>
+      <div class="font-grotesk text-2xl font-bold text-neo-yellow">~5-10&euro;</div>
+    </div>
+    <div class="neo-card bg-white p-6 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-lg">Supabase (Mémoire IA)</p>
+        <p class="text-sm text-gray-600">Plan Free — base de données + stockage + auth</p>
+      </div>
+      <div class="font-grotesk text-2xl font-bold text-neo-green">0&euro;</div>
+    </div>
+    <div class="neo-card bg-white p-6 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-lg">API Thaïs PMS</p>
+        <p class="text-sm text-gray-600">API ouverte et gratuite</p>
+      </div>
+      <div class="font-grotesk text-2xl font-bold text-neo-green">0&euro;</div>
+    </div>
+    <div class="neo-card bg-neo-yellow p-6 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-xl">TOTAL MENSUEL</p>
+        <p class="text-sm text-gray-600">Coût total de fonctionnement à votre charge</p>
+      </div>
+      <div class="font-grotesk text-3xl font-bold text-dark">~11-16&euro;/mois</div>
+    </div>
+  </div>
+  <div class="text-center mt-8">
+    <p class="text-gray-500 text-sm">C'est le prix de 2-3 cafés par semaine pour un assistant qui travaille jour et nuit.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- APPRENTISSAGE CONTINU -->
+<!-- ============================================ -->
+<section class="py-20 bg-neo-purple/5">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-purple text-white neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">APPRENTISSAGE</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">L'IA s'améliore avec le temps</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">C'est exactement ce que vous avez demandé : que vos réponses humaines alimentent l'IA pour qu'elle devienne meilleure.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="neo-card bg-white p-8 space-y-4 text-center">
+      <div class="w-16 h-16 bg-neo-blue neo-border-2 rounded-full mx-auto flex items-center justify-center text-2xl font-bold">1</div>
+      <h3 class="font-grotesk text-xl font-bold">L'IA répond</h3>
+      <p class="text-gray-600 text-sm">Chaque réponse envoyée est logguée dans Supabase avec le contexte complet (email reçu + réponse générée).</p>
+    </div>
+    <div class="neo-card bg-white p-8 space-y-4 text-center">
+      <div class="w-16 h-16 bg-neo-orange neo-border-2 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-white">2</div>
+      <h3 class="font-grotesk text-xl font-bold">Vous prenez le relais</h3>
+      <p class="text-gray-600 text-sm">Quand vous répondez vous-même (escalade), votre réponse est aussi logguée. On sait que c'est une réponse humaine.</p>
+    </div>
+    <div class="neo-card bg-white p-8 space-y-4 text-center">
+      <div class="w-16 h-16 bg-neo-green neo-border-2 rounded-full mx-auto flex items-center justify-center text-2xl font-bold text-white">3</div>
+      <h3 class="font-grotesk text-xl font-bold">On analyse ensemble</h3>
+      <p class="text-gray-600 text-sm">Chaque mois, on fait le point : ce qui va, ce qui ne va pas. On ajuste les règles et la mémoire. L'IA progresse en continu.</p>
+    </div>
+  </div>
+  <div class="mt-12 neo-card bg-white p-8 max-w-3xl mx-auto">
+    <h3 class="font-grotesk font-bold text-lg mb-4">Exemple concret :</h3>
+    <div class="space-y-3 text-sm">
+      <p class="text-gray-600">&#128308; <strong>Mois 1 :</strong> L'IA tutoie un client par erreur dans un email</p>
+      <p class="text-gray-600">&#128309; <strong>Correction :</strong> Vous le signalez, on ajoute la règle "toujours vouvoyer"</p>
+      <p class="text-gray-600">&#128994; <strong>Mois 2+ :</strong> L'IA ne fait plus jamais cette erreur</p>
+    </div>
+    <p class="text-xs text-gray-500 mt-4">C'est comme former un employé, sauf que l'IA n'oublie jamais ce qu'on lui enseigne.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CTA INTERMÉDIAIRE -->
+<!-- ============================================ -->
+<section class="py-16 bg-neo-blue">
+<div class="max-w-4xl mx-auto px-4 text-center space-y-6">
+  <h2 class="font-grotesk text-3xl md:text-4xl font-bold text-dark">Des questions sur un point technique ?</h2>
+  <p class="text-lg text-dark/80">N'hésitez pas à m'écrire sur WhatsApp à tout moment.</p>
+  <a href="https://wa.me/33626105640" target="_blank" class="neo-btn bg-dark text-white px-8 py-4 text-lg font-grotesk">
+    WhatsApp : 06 26 10 56 40 &rarr;
+  </a>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- PROCHAINE ÉTAPE — VENDREDI -->
+<!-- ============================================ -->
+<section id="vendredi" class="py-20 bg-white">
+<div class="max-w-5xl mx-auto px-4">
+  <div class="text-center mb-16 space-y-4">
+    <div class="inline-block bg-neo-yellow neo-border-2 px-4 py-1 font-grotesk font-bold text-sm">PROCHAINE ÉTAPE</div>
+    <h2 class="font-grotesk text-4xl md:text-5xl font-bold text-dark">On se retrouve vendredi</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Notre prochain call est déjà calé. Voici ce qu'on va faire ensemble.</p>
+  </div>
+  <div class="max-w-3xl mx-auto">
+    <div class="neo-card bg-neo-yellow/20 p-8 space-y-6">
+      <div class="text-center">
+        <p class="font-grotesk text-5xl font-bold text-dark">Vendredi</p>
+        <p class="text-lg text-gray-600">Call de suivi — déjà booké</p>
+      </div>
+      <hr class="border-dark/20">
+      <h3 class="font-grotesk font-bold text-lg">Ce qu'on va faire :</h3>
+      <div class="space-y-3">
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-dark text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">1</span>
+          <div>
+            <p class="font-bold text-sm">Valider l'architecture ensemble</p>
+            <p class="text-xs text-gray-500">Revoir cette présentation, répondre à toutes vos questions, valider l'approche Python + Supabase + Hostinger</p>
+          </div>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-dark text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">2</span>
+          <div>
+            <p class="font-bold text-sm">Récupérer vos premiers documents</p>
+            <p class="text-xs text-gray-500">Description de l'hôtel, exemples d'emails, connaissances locales — tout ce qui alimentera la mémoire IA</p>
+          </div>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-dark text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">3</span>
+          <div>
+            <p class="font-bold text-sm">Discuter avec Marion</p>
+            <p class="text-xs text-gray-500">Vous m'avez dit que vous alliez en parler avec votre collaboratrice. Ses retours sur le ton et les réponses seront précieux.</p>
+          </div>
+        </div>
+        <div class="bg-white neo-border-2 p-4 flex items-start gap-3">
+          <span class="bg-dark text-white w-6 h-6 flex items-center justify-center neo-border-2 text-xs font-bold flex-shrink-0">4</span>
+          <div>
+            <p class="font-bold text-sm">Planifier le démarrage</p>
+            <p class="text-xs text-gray-500">Si tout est validé, on lance la création des comptes + le développement. Objectif : opérationnel en 2-3 semaines.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Ce qu'Emmanuel peut préparer -->
+  <div class="mt-8 neo-card bg-white p-6 max-w-3xl mx-auto">
+    <h3 class="font-grotesk font-bold mb-3">&#128161; Ce que vous pouvez préparer d'ici vendredi :</h3>
+    <div class="space-y-2 text-sm">
+      <div class="flex items-center gap-2"><span class="text-neo-green font-bold">&#9744;</span> En parler avec Marion et recueillir ses retours</div>
+      <div class="flex items-center gap-2"><span class="text-neo-green font-bold">&#9744;</span> Rassembler d'autres exemples d'emails intéressants</div>
+      <div class="flex items-center gap-2"><span class="text-neo-green font-bold">&#9744;</span> Lister les connaissances locales (bateaux, restaurants, etc.)</div>
+      <div class="flex items-center gap-2"><span class="text-neo-green font-bold">&#9744;</span> Créer les 3 comptes (Hostinger, Anthropic, Supabase) si possible</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- BANDEAU FINAL -->
+<!-- ============================================ -->
+<section class="bg-dark neo-border-2 border-l-0 border-r-0 py-4 overflow-hidden">
+<div class="marquee whitespace-nowrap">
+  <span class="inline-block text-neo-yellow font-grotesk font-bold text-lg mx-8">&#9733; PYTHON SUR MESURE — ZÉRO N8N</span>
+  <span class="inline-block text-neo-blue font-grotesk font-bold text-lg mx-8">&#9733; MÉMOIRE IA SUPABASE</span>
+  <span class="inline-block text-neo-green font-grotesk font-bold text-lg mx-8">&#9733; ~11-16&euro;/MOIS DE FONCTIONNEMENT</span>
+  <span class="inline-block text-neo-pink font-grotesk font-bold text-lg mx-8">&#9733; OUTLOOK CONNECTÉ</span>
+  <span class="inline-block text-white font-grotesk font-bold text-lg mx-8">&#9733; CALL VENDREDI</span>
+  <span class="inline-block text-neo-purple font-grotesk font-bold text-lg mx-8">&#9733; MODE BROUILLON SEMAINE 1</span>
+  <span class="inline-block text-neo-yellow font-grotesk font-bold text-lg mx-8">&#9733; PYTHON SUR MESURE — ZÉRO N8N</span>
+  <span class="inline-block text-neo-blue font-grotesk font-bold text-lg mx-8">&#9733; MÉMOIRE IA SUPABASE</span>
+  <span class="inline-block text-neo-green font-grotesk font-bold text-lg mx-8">&#9733; ~11-16&euro;/MOIS DE FONCTIONNEMENT</span>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- CTA FINAL -->
+<!-- ============================================ -->
+<section class="py-24 bg-neo-purple relative overflow-hidden">
+<div class="absolute top-10 left-10 w-32 h-32 bg-neo-yellow neo-border rounded-full float opacity-30"></div>
+<div class="absolute bottom-10 right-10 w-24 h-24 bg-neo-blue neo-border rounded-full float opacity-30" style="animation-delay:1s"></div>
+<div class="max-w-4xl mx-auto px-4 text-center space-y-8 relative z-10">
+  <h2 class="font-grotesk text-4xl md:text-6xl font-bold text-white">On avance ensemble ?</h2>
+  <p class="text-xl text-white/80 max-w-2xl mx-auto">
+    On a toutes les clés en main. Préparez vos documents, créez les comptes, et on se retrouve vendredi pour lancer le projet.
+  </p>
+  <div class="flex flex-col sm:flex-row justify-center gap-4">
+    <a href="https://wa.me/33626105640" target="_blank" class="neo-btn bg-neo-green text-white px-10 py-5 text-xl font-grotesk">
+      &#128172; WhatsApp : 06 26 10 56 40
+    </a>
+  </div>
+  <div class="flex flex-wrap justify-center gap-4 mt-4">
+    <a href="https://www.hostinger.fr/serveur-vps" target="_blank" class="neo-btn bg-white/20 text-white px-6 py-3 text-sm font-grotesk">VPS Hostinger &rarr;</a>
+    <a href="https://console.anthropic.com" target="_blank" class="neo-btn bg-white/20 text-white px-6 py-3 text-sm font-grotesk">Anthropic &rarr;</a>
+    <a href="https://supabase.com" target="_blank" class="neo-btn bg-white/20 text-white px-6 py-3 text-sm font-grotesk">Supabase &rarr;</a>
+  </div>
+  <div class="neo-card bg-white/20 p-6 max-w-md mx-auto border-white/30">
+    <p class="font-grotesk font-bold text-white">Baptiste — VisionIA</p>
+    <p class="text-white/70 text-sm">Spécialiste IA pour l'hôtellerie</p>
+    <p class="text-white/70 text-sm mt-2">&#128222; 06 26 10 56 40</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FOOTER -->
+<!-- ============================================ -->
+<footer class="bg-dark text-white py-16">
+<div class="max-w-7xl mx-auto px-4">
+  <div class="grid md:grid-cols-3 gap-12">
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-neo-purple neo-border-2 flex items-center justify-center font-grotesk font-bold text-white">V</div>
+        <div>
+          <span class="font-grotesk font-bold text-lg">VisionIA</span>
+          <span class="badge-suite ml-2">PARTIE 2</span>
+        </div>
+      </div>
+      <p class="text-gray-400 text-sm">Solutions d'intelligence artificielle sur mesure pour l'hôtellerie et le tourisme.</p>
+    </div>
+    <div class="space-y-4">
+      <h3 class="font-grotesk font-bold">Liens rapides</h3>
+      <div class="space-y-2 text-sm text-gray-400">
+        <p>&#128279; <a href="https://www.hostinger.fr/serveur-vps" target="_blank" class="hover:text-white">VPS Hostinger</a></p>
+        <p>&#128279; <a href="https://console.anthropic.com" target="_blank" class="hover:text-white">Console Anthropic</a></p>
+        <p>&#128279; <a href="https://supabase.com" target="_blank" class="hover:text-white">Supabase</a></p>
+      </div>
+    </div>
+    <div class="space-y-4">
+      <h3 class="font-grotesk font-bold">Contact</h3>
+      <div class="space-y-2 text-sm text-gray-400">
+        <p>&#128222; <a href="tel:+33626105640" class="hover:text-white">06 26 10 56 40</a></p>
+        <p>&#128172; <a href="https://wa.me/33626105640" target="_blank" class="hover:text-white">WhatsApp</a></p>
+      </div>
+    </div>
+  </div>
+  <hr class="border-white/10 my-8">
+  <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+    <p>&copy; 2026 VisionIA — Partie 2 : Suite Technique pour Le Martin Boutique Hôtel</p>
+    <p>Fait avec &#10084; pour Emmanuel &amp; Marion</p>
+  </div>
+</div>
+</footer>
+
+<!-- BOUTON FLOTTANT -->
+<div class="cta-float">
+<a href="https://wa.me/33626105640" target="_blank" class="neo-btn bg-neo-green text-white px-6 py-3 font-grotesk text-sm flex items-center gap-2 pulse-glow">
+  &#128172; WhatsApp
+</a>
+</div>
+
+<!-- SCROLL ANIMATION SCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+  },{threshold:0.1});
+  document.querySelectorAll('.neo-card, .email-bubble, .email-bubble-ai, .img-neo').forEach(el=>{
+    el.classList.add('slide-in');observer.observe(el)
+  });
+  window.addEventListener('scroll',()=>{
+    const nav=document.getElementById('navbar');
+    if(window.scrollY>50){nav.style.boxShadow='0 4px 20px rgba(0,0,0,0.1)'}
+    else{nav.style.boxShadow='none'}
+  });
+});
+</script>
+
+</body>
+</html>
